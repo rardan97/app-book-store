@@ -1,0 +1,61 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Java / Maven
+/target/
+**/logs/
+**/*.log
+
+
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### OS junk
+.DS_Store
+Thumbs.db
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Environment
+.env
+.env.*
+*.key
+*.pem
+*.crt
+
+### Uploads
+uploads/
+*.bak
+*.tmp
+
+### Redis/Kafka
+dump.rdb
+*.pid
+
