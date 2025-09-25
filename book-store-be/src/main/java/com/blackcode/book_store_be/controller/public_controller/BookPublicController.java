@@ -3,7 +3,7 @@ package com.blackcode.book_store_be.controller.public_controller;
 import com.blackcode.book_store_be.dto.books.BooksRes;
 import com.blackcode.book_store_be.service.BooksService;
 import com.blackcode.book_store_be.service.FileStorageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.blackcode.book_store_be.utils.ApiResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,22 +21,29 @@ import java.util.List;
 @RequestMapping("/api/public/books")
 public class BookPublicController {
 
-    @Autowired
-    private BooksService booksService;
+    private final BooksService booksService;
 
-    @Autowired
-    private FileStorageService storageService;
+    private final FileStorageService storageService;
+
+    public BookPublicController(BooksService booksService, FileStorageService storageService) {
+        this.booksService = booksService;
+        this.storageService = storageService;
+    }
 
     @GetMapping("/getBooksListAll")
-    public ResponseEntity<List<BooksRes>> getBooksListAll(){
-        return ResponseEntity.ok(booksService.getBooksPublicListAll());
+    public ResponseEntity<ApiResponse<List<BooksRes>>> getBooksListAll(){
+        List<BooksRes> booksResList = booksService.getBooksPublicListAll();
+        return ResponseEntity.ok(ApiResponse.success("Book retrieved successfully", 200, booksResList));
     }
 
     @GetMapping("/getBooksFindById/{id}")
-    public ResponseEntity<BooksRes> getBooksFindById(@PathVariable("id") Long id){
-        return ResponseEntity.ok(booksService.getBooksFindById(id));
+    public ResponseEntity<ApiResponse<BooksRes>> getBooksFindById(@PathVariable("id") Long id){
+        BooksRes booksRes = booksService.getBooksFindById(id);
+        return ResponseEntity.ok(ApiResponse.success("Category found", 200, booksRes));
     }
 
+
+    //Belum Clean
     @GetMapping("/images/{filename}")
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
         try {

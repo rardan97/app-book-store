@@ -4,7 +4,7 @@ import com.blackcode.book_store_be.dto.books.BooksReq;
 import com.blackcode.book_store_be.dto.books.BooksRes;
 import com.blackcode.book_store_be.service.BooksService;
 import com.blackcode.book_store_be.service.FileStorageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.blackcode.book_store_be.utils.ApiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,27 +23,31 @@ public class BookController {
     @Value("${upload.dir}")
     private String uploadDir;
 
-    @Autowired
-    private BooksService booksService;
+    private final BooksService booksService;
 
-    @Autowired
-    private FileStorageService storageService;
+    private final FileStorageService storageService;
+
+    public BookController(BooksService booksService, FileStorageService storageService) {
+        this.booksService = booksService;
+        this.storageService = storageService;
+    }
 
     @GetMapping("/getBooksListAll")
-    public ResponseEntity<List<BooksRes>> getBooksListAll(){
-        return ResponseEntity.ok(booksService.getBooksListAll());
+    public ResponseEntity<ApiResponse<List<BooksRes>>> getBooksListAll(){
+        List<BooksRes>  booksResList = booksService.getBooksListAll();
+        return ResponseEntity.ok(ApiResponse.success("Book retrieved successfully", 200, booksResList));
     }
 
     @GetMapping("/getBooksFindById/{id}")
-    public ResponseEntity<BooksRes> getBooksFindById(@PathVariable("id") Long id){
-        return ResponseEntity.ok(booksService.getBooksFindById(id));
+    public ResponseEntity<ApiResponse<BooksRes>> getBooksFindById(@PathVariable("id") Long id){
+        BooksRes booksRes = booksService.getBooksFindById(id);
+        return ResponseEntity.ok(ApiResponse.success("Books found", 200, booksRes));
     }
 
     @PostMapping("/addBooks")
-    public ResponseEntity<BooksRes> addBooks(
+    public ResponseEntity<ApiResponse<BooksRes>> addBooks(
             @RequestPart("book") BooksReq booksReq,
-            @RequestPart(value = "bookImage", required = false) MultipartFile bookImage
-    ){
+            @RequestPart(value = "bookImage", required = false) MultipartFile bookImage){
 
         BooksReq bookReq = new BooksReq();
         bookReq.setBookTitle(booksReq.getBookTitle());
@@ -57,16 +61,16 @@ public class BookController {
             bookReq.setBookImage(imagePath);
         }
 
-        System.out.println("image path : "+bookReq.getBookImage());
-        return ResponseEntity.ok(booksService.addBooks(bookReq));
+        BooksRes booksRes = booksService.addBooks(bookReq);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("Category created", 201, booksRes));
     }
 
     @PutMapping("/updateBooks/{id}")
-    public ResponseEntity<BooksRes> updateBooks(
+    public ResponseEntity<ApiResponse<BooksRes>> updateBooks(
             @PathVariable("id") Long id,
             @RequestPart("book") BooksReq booksReq,
-            @RequestPart(value = "bookImage", required = false) MultipartFile bookImage
-    ){
+            @RequestPart(value = "bookImage", required = false) MultipartFile bookImage){
+
         BooksReq bookReq = new BooksReq();
         bookReq.setBookTitle(booksReq.getBookTitle());
         bookReq.setAuthor(booksReq.getAuthor());
@@ -97,15 +101,15 @@ public class BookController {
             }
         }
 
-        return ResponseEntity.ok(booksService.updateBook(id, bookReq));
+        BooksRes booksRes = booksService.updateBook(id, bookReq);
+        return ResponseEntity.ok(ApiResponse.success("Category Update", 200, booksRes));
     }
 
     @DeleteMapping("/deleteBooksById/{id}")
-    public ResponseEntity<String> deleteBooksById(@PathVariable("id") Long id){
+    public ResponseEntity<ApiResponse<String>> deleteBooksById(@PathVariable("id") Long id){
         String rtn = booksService.deleteBook(id);
-        return ResponseEntity.ok(rtn);
+        return ResponseEntity.ok(ApiResponse.success("Category success Delete", 200, rtn));
     }
-
 
     @GetMapping("/images/{filename}")
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
@@ -119,10 +123,4 @@ public class BookController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-
-
-
-
-
 }

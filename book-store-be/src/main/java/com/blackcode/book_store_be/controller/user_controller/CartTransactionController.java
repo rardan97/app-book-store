@@ -1,10 +1,8 @@
 package com.blackcode.book_store_be.controller.user_controller;
 
-
 import com.blackcode.book_store_be.dto.cartitems.CartItemsReq;
 import com.blackcode.book_store_be.dto.cartitems.CartItemsRes;
 import com.blackcode.book_store_be.service.CartItemsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +13,14 @@ import java.util.Set;
 @RequestMapping("/api/user/cartTransaction")
 public class CartTransactionController {
 
-    @Autowired
-    private CartItemsService cartItemsService;
+    private final CartItemsService cartItemsService;
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-
+    public CartTransactionController(CartItemsService cartItemsService, RedisTemplate<String, Object> redisTemplate) {
+        this.cartItemsService = cartItemsService;
+        this.redisTemplate = redisTemplate;
+    }
 
     @GetMapping("/getCart/{userId}")
     public List<CartItemsRes> getCart(@PathVariable("userId") Long userId) {
@@ -78,9 +77,5 @@ public class CartTransactionController {
     public Set<String> getKeys() {
         return redisTemplate.keys("*");
     }
-
-
-
-
 
 }

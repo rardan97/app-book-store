@@ -1,10 +1,8 @@
 package com.blackcode.book_store_be.controller.public_controller;
 
-
-import com.blackcode.book_store_be.dto.books.BooksRes;
 import com.blackcode.book_store_be.dto.category.CategoryRes;
 import com.blackcode.book_store_be.service.CategoryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.blackcode.book_store_be.utils.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,16 +15,21 @@ import java.util.List;
 @RequestMapping("/api/public/category")
 public class CategoryPublicController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+
+    public CategoryPublicController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/getCategoryListAll")
-    public ResponseEntity<List<CategoryRes>> getBooksListAll(){
-        return ResponseEntity.ok(categoryService.getListAll());
+    public ResponseEntity<ApiResponse<List<CategoryRes>>> getBooksListAll(){
+        List<CategoryRes> categoryResList = categoryService.getListAll();
+        return ResponseEntity.ok(ApiResponse.success("Category retrieved successfully", 200, categoryResList));
     }
 
     @GetMapping("/getCategoryFindById/{id}")
-    public ResponseEntity<CategoryRes> getBooksFindById(@PathVariable("id") Long id){
-        return ResponseEntity.ok(categoryService.getFindById(id));
+    public ResponseEntity<ApiResponse<CategoryRes>> getBooksFindById(@PathVariable("id") Long id){
+        CategoryRes categoryRes = categoryService.getFindById(id);
+        return ResponseEntity.ok(ApiResponse.success("Category found", 200, categoryRes));
     }
 }

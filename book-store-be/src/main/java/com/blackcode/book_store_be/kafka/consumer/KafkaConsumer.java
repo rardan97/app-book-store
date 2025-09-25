@@ -33,7 +33,6 @@ public class KafkaConsumer {
                     System.out.println("Clear Process Received message: " + message);
 //                    cartRepository.deleteByUserId(event.getUserId());
                     break;
-
             }
         } catch (Exception e) {
             e.printStackTrace();

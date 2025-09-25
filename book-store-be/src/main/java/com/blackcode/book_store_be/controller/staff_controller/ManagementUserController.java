@@ -2,7 +2,6 @@ package com.blackcode.book_store_be.controller.staff_controller;
 
 import com.blackcode.book_store_be.dto.managementuser.ManagementUserRes;
 import com.blackcode.book_store_be.service.ManagementUserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,11 @@ import java.util.List;
 @RequestMapping("/api/staff/userManagement")
 public class ManagementUserController {
 
-    @Autowired
-    private ManagementUserService managementUserService;
+    private final ManagementUserService managementUserService;
+
+    public ManagementUserController(ManagementUserService managementUserService) {
+        this.managementUserService = managementUserService;
+    }
 
     @GetMapping("/getUserManagementListAll")
     public ResponseEntity<List<ManagementUserRes>> getUserManagementListAll(){
