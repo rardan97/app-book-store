@@ -1,17 +1,14 @@
-# Gunakan image Nginx ringan
-FROM nginx:alpine
+FROM node:20
 
-# Hapus default html nginx
-RUN rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-# Salin hasil build dari host ke image
-COPY dist/ /usr/share/nginx/html
+COPY package*.json ./
 
-# Salin konfigurasi custom nginx
-COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose port nginx
-EXPOSE 80
+RUN npm install
 
-# Jalankan nginx
-CMD ["nginx", "-g", "daemon off;"]
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]

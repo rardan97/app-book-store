@@ -1,5 +1,6 @@
 package com.blackcode.book_store_be.controller.public_controller;
 
+import com.blackcode.book_store_be.dto.ImageLoadDto;
 import com.blackcode.book_store_be.dto.books.BooksRes;
 import com.blackcode.book_store_be.service.BooksService;
 import com.blackcode.book_store_be.service.FileStorageService;
@@ -23,11 +24,8 @@ public class BookPublicController {
 
     private final BooksService booksService;
 
-    private final FileStorageService storageService;
-
-    public BookPublicController(BooksService booksService, FileStorageService storageService) {
+    public BookPublicController(BooksService booksService) {
         this.booksService = booksService;
-        this.storageService = storageService;
     }
 
     @GetMapping("/getBooksListAll")
@@ -42,33 +40,10 @@ public class BookPublicController {
         return ResponseEntity.ok(ApiResponse.success("Category found", 200, booksRes));
     }
 
-
-    //Belum Clean
     @GetMapping("/images/{filename}")
     public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
-        try {
-            byte[] image = storageService.load(filename);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);
-
-            return new ResponseEntity<>(image, headers, HttpStatus.OK);
-        } catch (Exception e) {
-            System.err.println("Image not found: " + filename + ". Returning fallback.");
-
-            try {
-                InputStream fallbackStream = getClass().getResourceAsStream("/static/default.jpg");
-                if (fallbackStream == null) {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-                }
-                byte[] fallbackImage = fallbackStream.readAllBytes();
-                HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                return new ResponseEntity<>(fallbackImage, headers, HttpStatus.OK);
-            } catch (IOException ex) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        }
+        ImageLoadDto imageLoadDto = booksService.loadImage(filename);
+        return new ResponseEntity<>(imageLoadDto.getImage(), imageLoadDto.getHeaders(), HttpStatus.OK);
     }
-
 
 }
