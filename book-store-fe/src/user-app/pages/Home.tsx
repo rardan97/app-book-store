@@ -9,8 +9,6 @@ export default function Home() {
         <div>
             <HeroSection />
             <CategoryBook />
-            {/* <BookBestSellers />
-            <BookFavorites /> */}
             <BookList />
         </div>
         </>

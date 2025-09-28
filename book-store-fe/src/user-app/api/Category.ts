@@ -1,6 +1,7 @@
 import axios from "axios";
 import { REST_API_BASE_URL_USER_PUBLIC } from "../../config";
 import type { Category } from "../interfaces/CategoryPublic.interface";
+import type { ApiResponse } from "../interfaces/ApiResponse.interface";
 
 
 export const api = axios.create({
@@ -8,9 +9,9 @@ export const api = axios.create({
     withCredentials: true
 });
 
-export async function getPublicListCategory() : Promise<Category[]>{
+export async function getPublicListCategory() : Promise<ApiResponse<Category[]>>{
     try{
-        const response = await api.get<Category[]>(`${REST_API_BASE_URL_USER_PUBLIC}/category/getCategoryListAll`, {
+        const response = await api.get<ApiResponse<Category[]>>(`/category/getCategoryListAll`, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -24,9 +25,9 @@ export async function getPublicListCategory() : Promise<Category[]>{
     }
 }
 
-export async function getPublicCategoryValueById(id : number) : Promise<Category>{
+export async function getPublicCategoryValueById(id : number) : Promise<ApiResponse<Category>>{
     try{
-        const response = await api.get<Category>(`${REST_API_BASE_URL_USER_PUBLIC}/category/getCategoryFindById/${id}`, {
+        const response = await api.get<ApiResponse<Category>>(`/category/getCategoryFindById/${id}`, {
             headers: {
                 "Content-Type": "application/json"
             },

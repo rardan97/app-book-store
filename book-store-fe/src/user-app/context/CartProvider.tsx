@@ -13,14 +13,6 @@ interface CartItem {
 }
 
 
-// interface CartItemPayload {
-//     bookId: number;
-//     bookTitle: string;
-//     price: string;
-//     bookImage: string;     // untuk ditampilkan
-//     quantity: number;
-// }
-
 type CartItemPayload = {
   bookId: number;
   bookTitle: string;

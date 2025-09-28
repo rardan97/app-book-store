@@ -4,7 +4,6 @@ package com.blackcode.book_store_be.model.staff;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

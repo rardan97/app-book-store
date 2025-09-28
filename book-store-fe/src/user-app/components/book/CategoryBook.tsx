@@ -3,26 +3,6 @@ import { Link } from "react-router-dom";
 import type { Category } from "../../interfaces/CategoryPublic.interface";
 import { getPublicListCategory } from "../../api/Category";
 
-// interface Category {
-// id: number;
-// name: string;
-// iconUrl: string;
-// }
-
-// const categories: Category[] = [
-// { id: 1, name: "Fiction", iconUrl: "https://source.unsplash.com/80x80/?fiction,book" },
-// { id: 2, name: "Science", iconUrl: "https://source.unsplash.com/80x80/?science,book" },
-// { id: 3, name: "History", iconUrl: "https://source.unsplash.com/80x80/?history,book" },
-// { id: 4, name: "Fantasy", iconUrl: "https://source.unsplash.com/80x80/?fantasy,book" },
-// { id: 5, name: "Romance", iconUrl: "https://source.unsplash.com/80x80/?romance,book" },
-// ];
-
-
-
-
-
-
-
 
 const CategoryBook: React.FC = () => {
 
@@ -34,8 +14,10 @@ const hasFetched = useRef(false);
         
         try {
             const response = await getPublicListCategory();
-            console.log("Success processing data");
-            setCategorys(response);
+            if(response && response.data){
+                console.log("Success processing data");
+                setCategorys(response.data);
+            }
         } catch (error) {
             console.log("Failed processing data", error);
             throw error;

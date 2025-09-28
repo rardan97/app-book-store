@@ -26,19 +26,26 @@ import java.util.Optional;
 @Component
 public class StaffAuthTokenFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtils jwtUtils;
 
-    @Autowired
-    private StaffDetailsServiceImpl staffDetailsService;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    StaffTokenRepository staffTokenRepository;
 
-    @Autowired
-    StaffRepository staffRepository;
+    private final StaffDetailsServiceImpl staffDetailsService;
 
-    private static final Logger logger = LoggerFactory.getLogger(UserAuthTokenFilter.class);
+
+    private final StaffTokenRepository staffTokenRepository;
+
+
+    private final StaffRepository staffRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(StaffAuthTokenFilter.class);
+
+    public StaffAuthTokenFilter(JwtUtils jwtUtils, StaffDetailsServiceImpl staffDetailsService, StaffTokenRepository staffTokenRepository, StaffRepository staffRepository) {
+        this.jwtUtils = jwtUtils;
+        this.staffDetailsService = staffDetailsService;
+        this.staffTokenRepository = staffTokenRepository;
+        this.staffRepository = staffRepository;
+    }
 
 
     @Override

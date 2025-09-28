@@ -33,9 +33,10 @@ export const BooksProvider = ({ children }: { children: ReactNode }) => {
 
   try {
     const response = await getPublicListBooks();
+     if(response && response.data){
 
     const updatedBooks = await Promise.all(
-      response.map(async (book) => {
+      response.data.map(async (book) => {
         let imageUrl = "";
 
         console.log("Data Book Context : "+book.bookImage);
@@ -63,6 +64,7 @@ export const BooksProvider = ({ children }: { children: ReactNode }) => {
     );
 
     setBooks(updatedBooks);
+    }
   } catch (error) {
     console.error("Failed to fetch books", error);
   }
@@ -70,9 +72,7 @@ export const BooksProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchBooks();
-
-  
-  }, []);
+  });
 
   return (
     <BooksContext.Provider value={{ books, fetchBooks }}>

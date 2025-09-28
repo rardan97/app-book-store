@@ -1,16 +1,17 @@
 import axios from "axios";
 import { REST_API_BASE_URL_STAFF } from "../../config";
 import type { Category, CategoryDto } from "../interfaces/Category.interface";
+import type { ApiResponse } from "../interfaces/ApiResponse.interface";
 
 export const api = axios.create({
     baseURL: REST_API_BASE_URL_STAFF,
     withCredentials: true
 });
 
-export async function getListCategories(token: string) : Promise<Category[]>{
+export async function getListCategories(token: string) : Promise<ApiResponse<Category[]>>{
     console.log("Data Token : "+token);
     try{
-        const response = await api.get<Category[]>(`${REST_API_BASE_URL_STAFF}/category/getCategoryListAll`, {
+        const response = await api.get<ApiResponse<Category[]>>(`/category/getCategoryListAll`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -23,9 +24,9 @@ export async function getListCategories(token: string) : Promise<Category[]>{
     }
 }
 
-export async function addCategories(token: string, data: CategoryDto) : Promise<Category>{
+export async function addCategories(token: string, data: CategoryDto) : Promise<ApiResponse<Category>>{
     try{
-        const response = await api.post<Category>(`${REST_API_BASE_URL_STAFF}/category/addCategory`, data, {
+        const response = await api.post<ApiResponse<Category>>(`/category/addCategory`, data, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -38,9 +39,9 @@ export async function addCategories(token: string, data: CategoryDto) : Promise<
     }
 }
 
-export async function editCategories(token: string, id : number, data: Category) : Promise<Category>{
+export async function editCategories(token: string, id : number, data: Category) : Promise<ApiResponse<Category>>{
     try{
-        const response = await api.put<Category>(`${REST_API_BASE_URL_STAFF}/category/updateCategory/${id}`, data, {
+        const response = await api.put<ApiResponse<Category>>(`/category/updateCategory/${id}`, data, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -54,9 +55,9 @@ export async function editCategories(token: string, id : number, data: Category)
 }
 
 
-export async function getCategoryValueById(token: string, id : number) : Promise<Category>{
+export async function getCategoryValueById(token: string, id : number) : Promise<ApiResponse<Category>>{
     try{
-        const response = await api.get<Category>(`${REST_API_BASE_URL_STAFF}/category/getCategoryFindById/${id}`, {
+        const response = await api.get<ApiResponse<Category>>(`/category/getCategoryFindById/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -69,9 +70,9 @@ export async function getCategoryValueById(token: string, id : number) : Promise
     }
 }
 
-export async function delCategoryValueById(token: string, id : number) : Promise<string>{
+export async function delCategoryValueById(token: string, id : number) : Promise<ApiResponse<string>>{
     try{
-        const response = await api.delete<string>(`${REST_API_BASE_URL_STAFF}/category/deleteCategoryById/${id}`, {
+        const response = await api.delete<ApiResponse<string>>(`/category/deleteCategoryById/${id}`, {
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,

@@ -1,15 +1,16 @@
 import axios from "axios";
 import { REST_API_BASE_URL_USER_PUBLIC } from "../../config";
 import type { BooksPublic } from "../interfaces/BooksPublic.interface";
+import type { ApiResponse } from "../interfaces/ApiResponse.interface";
 
 export const api = axios.create({
     baseURL: REST_API_BASE_URL_USER_PUBLIC,
     withCredentials: true
 });
 
-export async function getPublicListBooks() : Promise<BooksPublic[]>{
+export async function getPublicListBooks() : Promise<ApiResponse<BooksPublic[]>>{
     try{
-        const response = await api.get<BooksPublic[]>(`${REST_API_BASE_URL_USER_PUBLIC}/books/getBooksListAll`, {
+        const response = await api.get<ApiResponse<BooksPublic[]>>(`/books/getBooksListAll`, {
             headers: {
                 "Content-Type": "application/json"
             },
@@ -23,9 +24,9 @@ export async function getPublicListBooks() : Promise<BooksPublic[]>{
     }
 }
 
-export async function getPublicBookValueById(id : number) : Promise<BooksPublic>{
+export async function getPublicBookValueById(id : number) : Promise<ApiResponse<BooksPublic>>{
     try{
-        const response = await api.get<BooksPublic>(`${REST_API_BASE_URL_USER_PUBLIC}/books/getBooksFindById/${id}`, {
+        const response = await api.get<ApiResponse<BooksPublic>>(`/books/getBooksFindById/${id}`, {
             headers: {
                 "Content-Type": "application/json"
             },

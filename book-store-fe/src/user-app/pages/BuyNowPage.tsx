@@ -15,12 +15,6 @@ export interface Book {
     quantity: number;
 }
 
-// interface Item {
-//     bookId: number;
-//     bookTitle: string;
-//     price: string;
-//     quantity: number;
-// }
 
 const BuyNowPage: React.FC = () => {
     const { books } = useBooks();
@@ -56,13 +50,6 @@ const BuyNowPage: React.FC = () => {
     const handleProceedToCheckout = async () => {
     // const handleProceedToCheckout = () => {
         if (!book) return;
-
-        // const newItem: Item = {
-        //     bookId: book.bookId,
-        //     bookTitle: book.bookTitle,
-        //     price: book.price,
-        //     quantity,
-        // };
 
         const payload: CheckoutPayload = {
             dataProductTransaksi: {
@@ -141,8 +128,8 @@ const BuyNowPage: React.FC = () => {
                 </div>
 
                 <button
-                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
-                onClick={() => handleProceedToCheckout()}
+                    className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg transition"
+                    onClick={() => handleProceedToCheckout()}
                 >
                 Proceed to Checkout
                 </button>

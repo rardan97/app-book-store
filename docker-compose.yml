@@ -2,7 +2,7 @@ services:
     # ===================== MYSQL =====================
     book-store-mysql-db:
         image: mysql:8.0
-        container_name: mysql
+        container_name: book-store-mysql
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: db_book_store
@@ -22,7 +22,7 @@ services:
     # ===================== REDIS =====================
     redis:
         image: redis:latest
-        container_name: redis
+        container_name: book-store-redis
         ports:
             - "6379:6379"
         volumes:
@@ -37,7 +37,7 @@ services:
     
     redis-insight:
         image: redis/redisinsight:latest
-        container_name: redis_insight
+        container_name: book-store-redis-insight
         ports:
             - "5540:5540"
         networks:
@@ -81,9 +81,12 @@ services:
         env_file:
             - ./book-store-be/.env
         depends_on:
-            - book-store-mysql-db
-            - redis
-            - kafka
+            book-store-mysql-db:
+                condition: service_healthy
+            redis:
+                condition: service_started
+            kafka:
+                condition: service_started
         volumes:
             - ./uploads:/app/uploads
         networks:

@@ -25,19 +25,23 @@ import java.util.Optional;
 
 @Component
 public class UserAuthTokenFilter extends OncePerRequestFilter {
-    @Autowired
-    private JwtUtils jwtUtils;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final JwtUtils jwtUtils;
 
-    @Autowired
-    UserTokenRepository userTokenRepository;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserTokenRepository userTokenRepository;
+
+    private final UserRepository userRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(UserAuthTokenFilter.class);
+
+    public UserAuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsService, UserTokenRepository userTokenRepository, UserRepository userRepository) {
+        this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
+        this.userTokenRepository = userTokenRepository;
+        this.userRepository = userRepository;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

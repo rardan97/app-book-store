@@ -13,8 +13,10 @@ import java.util.Optional;
 public interface StaffRefreshTokenRepository extends JpaRepository<StaffRefreshToken, Long> {
 
     Optional<StaffRefreshToken> findByToken(String token);
+
     @Query("SELECT rt FROM StaffRefreshToken rt WHERE rt.staff.id = :staffId")
     Optional<StaffRefreshToken> findByStaffId(Long staffId);
+
     @Modifying
     int deleteByStaff(Staff staff);
 }

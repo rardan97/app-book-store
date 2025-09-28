@@ -3,21 +3,8 @@ import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import Button from "../../../staff-app/components/ui/button/Button";
 import Alert from "../../../staff-app/components/ui/alert/Alert";
 import { signUpAuthUser } from "../../api/Auth";
+import type { SignUpReq } from "../../interfaces/SignUp.interface";
 
-interface SignUpReq {
-    userFullName: string;
-    username: string;
-    userEmail: string;
-    password: string;
-}
-
-interface SignUp {
-    userFullName: string;
-    username: string;
-    userEmail: string;
-    password: string;
-    confirmPassword: string;
-}
 
 interface Errors {
     userFullName: string;
@@ -48,6 +35,7 @@ const SignUp: React.FC = () => {
         console.log("proccess validation");
         let valid = true;
         const errorsCopy = {... errors}
+        
         if(userFullName.trim()){
             errorsCopy.userFullName = '';
         }else{
@@ -125,110 +113,106 @@ const SignUp: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-r from-purple-700 via-indigo-800 to-blue-900 flex items-center justify-center px-6 py-12">
-        <div className="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl shadow-2xl max-w-lg w-full p-10 space-y-8">
-            <h2 className="text-4xl font-extrabold text-center text-indigo-900 select-none">
-            Create Account
-            </h2>
-            <p className="text-center text-indigo-700 font-medium tracking-wide">
-            Join our BookStore community
-            </p>
+            <div className="bg-white bg-opacity-90 backdrop-blur-lg rounded-3xl shadow-2xl max-w-lg w-full p-10 space-y-8">
+                <h2 className="text-4xl font-extrabold text-center text-indigo-900 select-none">
+                Create Account
+                </h2>
+                <p className="text-center text-indigo-700 font-medium tracking-wide">
+                Join our BookStore community
+                </p>
 
-            {errorsAll && 
-                <Alert
-                    variant="error"
-                    title="Error Authentication"
-                    message={errorsAll}
-                />
-            }
-
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="relative">
-                    <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
-                    <input
-                    type="text"
-                    id="name"
-                    placeholder="Full Name"
-                    value={userFullName}
-                    onChange={(e) => setUserFullName(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
+                {errorsAll && 
+                    <Alert
+                        variant="error"
+                        title="Error Authentication"
+                        message={errorsAll}
                     />
-                    {errors.userFullName && <p className="text-red-500 text-sm">{errors.userFullName}</p>}
-                </div>
-                <div className="relative">
-                    <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
-                    <input
-                    type="text"
-                    id="name"
-                    placeholder="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
-                    />
-                    {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
-                </div>
+                }
 
-                <div className="relative">
-                    <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
-                    <input
-                    type="email"
-                    id="email"
-                    placeholder="Email address"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                    required
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
-                    />
-                    {errors.userEmail && <p className="text-red-500 text-sm">{errors.userEmail}</p>}
-                </div>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="relative">
+                        <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
+                        <input
+                        type="text"
+                        id="name"
+                        placeholder="Full Name"
+                        value={userFullName}
+                        onChange={(e) => setUserFullName(e.target.value)}
+                        required
+                        className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
+                        />
+                        {errors.userFullName && <p className="text-red-500 text-sm">{errors.userFullName}</p>}
+                    </div>
+                    <div className="relative">
+                        <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
+                        />
+                        {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+                    </div>
 
-                <div className="relative">
-                    <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
-                    <input
-                    type="password"
-                    id="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
-                    />
-                    {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-                </div>
+                    <div className="relative">
+                        <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Email address"
+                            value={userEmail}
+                            onChange={(e) => setUserEmail(e.target.value)}
+                            required
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
+                        />
+                        {errors.userEmail && <p className="text-red-500 text-sm">{errors.userEmail}</p>}
+                    </div>
 
-                <div className="relative">
-                    <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
-                    <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    required
-                    minLength={6}
-                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
-                    />
-                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-                </div>
+                    <div className="relative">
+                        <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            minLength={6}
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
+                        />
+                        {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                    </div>
 
-                <Button 
-                    type="submit"
-                    className="w-full" 
-                    size="sm"
-                    >
-                    Sign Up
-                </Button>
-            </form>
+                    <div className="relative">
+                        <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-indigo-600" />
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                            minLength={6}
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-400 transition outline-none text-indigo-900 font-semibold placeholder-indigo-400"
+                        />
+                        {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+                    </div>
 
-            <p className="text-center text-indigo-700 font-semibold">
-            Already have an account?{" "}
-            <a href="/signin" className="text-indigo-900 hover:underline">
-                Sign In
-            </a>
-            </p>
-        </div>
+                    <Button type="submit" className="w-full" size="sm">
+                        Sign Up
+                    </Button>
+                </form>
+
+                <p className="text-center text-indigo-700 font-semibold">
+                    Already have an account?{" "}
+                    <a href="/signin" className="text-indigo-900 hover:underline">
+                        Sign In
+                    </a>
+                </p>
+            </div>
         </div>
     );
 };

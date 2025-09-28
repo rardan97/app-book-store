@@ -12,8 +12,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class StaffDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
-    StaffRepository staffRepository;
+
+    private final StaffRepository staffRepository;
+
+    public StaffDetailsServiceImpl(StaffRepository staffRepository) {
+        this.staffRepository = staffRepository;
+    }
 
     @Override
     @Transactional
