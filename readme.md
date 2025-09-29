@@ -1,3 +1,11 @@
 # APPLICATION BOOK STORE
 
-in progress
+- Spring Boot
+- Spring Security
+- Kafka
+- Redis
+- React JS + TypeScript
+
+--
+
+In Progress
