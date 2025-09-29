@@ -4,6 +4,7 @@
 - Spring Security
 - Kafka
 - Redis
+- Midtrans
 - React JS + TypeScript
 
 --
